@@ -37,10 +37,10 @@ if not st.session_state.OPENAI_API_KEY or not st.session_state.SERPAPI_API_KEY:
     if not st.session_state.OPENAI_API_KEY or not st.session_state.SERPAPI_API_KEY:
         st.warning("Please provide both OpenAI and SerpAPI API keys to use the flight search functionality.")
         st.stop()
-else:
-    # Use the keys from session state
-    OPENAI_API_KEY = st.session_state.OPENAI_API_KEY
-    SERPAPI_API_KEY = st.session_state.SERPAPI_API_KEY
+
+# Use the keys from session state
+OPENAI_API_KEY = st.session_state.OPENAI_API_KEY
+SERPAPI_API_KEY = st.session_state.SERPAPI_API_KEY
 
 # Set up the OpenAI client
 Client = OpenAI(api_key=OPENAI_API_KEY)
