@@ -18,32 +18,32 @@ st.markdown('<div class="blurred-background">', unsafe_allow_html=True)
 
 st.title("✈️ Flight Search and Analysis")
 
-# Check if API keys are set in environment variables
-OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
-SERPAPI_API_KEY = os.getenv('SERPAPI_API_KEY')
+# Check if API keys are set in environment variables or session state
+if 'OPENAI_API_KEY' not in st.session_state:
+    st.session_state.OPENAI_API_KEY = os.getenv('OPENAI_API_KEY', '')
+if 'SERPAPI_API_KEY' not in st.session_state:
+    st.session_state.SERPAPI_API_KEY = os.getenv('SERPAPI_API_KEY', '')
 
-if not OPENAI_API_KEY or not SERPAPI_API_KEY:
-    # API keys are not set, prompt the user to enter them
-    if 'OPENAI_API_KEY' not in st.session_state:
-        st.session_state.OPENAI_API_KEY = st.text_input("Enter your OpenAI API Key", type="password")
-    if 'SERPAPI_API_KEY' not in st.session_state:
-        st.session_state.SERPAPI_API_KEY = st.text_input("Enter your SerpAPI API Key", type="password")
+# Prompt the user to enter the keys if they are not provided
+if not st.session_state.OPENAI_API_KEY or not st.session_state.SERPAPI_API_KEY:
+    col1, col2 = st.columns(2)
     
-    # Ensure keys are provided
+    with col1:
+        st.session_state.OPENAI_API_KEY = st.text_input("Enter your OpenAI API Key", type="password", value=st.session_state.OPENAI_API_KEY)
+    with col2:
+        st.session_state.SERPAPI_API_KEY = st.text_input("Enter your SerpAPI API Key", type="password", value=st.session_state.SERPAPI_API_KEY)
+    
+    # Check if both keys are provided
     if not st.session_state.OPENAI_API_KEY or not st.session_state.SERPAPI_API_KEY:
         st.warning("Please provide both OpenAI and SerpAPI API keys to use the flight search functionality.")
         st.stop()
-    
-    # Use the keys provided by the user
+else:
+    # Use the keys from session state
     OPENAI_API_KEY = st.session_state.OPENAI_API_KEY
     SERPAPI_API_KEY = st.session_state.SERPAPI_API_KEY
-else:
-    # Use the keys from environment variables
-    st.session_state.OPENAI_API_KEY = OPENAI_API_KEY
-    st.session_state.SERPAPI_API_KEY = SERPAPI_API_KEY
 
 # Set up the OpenAI client
-Client = OpenAI(api_key=st.session_state.OPENAI_API_KEY)
+Client = OpenAI(api_key=OPENAI_API_KEY)
 
 # Custom CSS to apply a background image
 css_style = f"""
@@ -76,7 +76,7 @@ if st.button("🔍 Search Flights"):
 
     # Define parameters for the flight search
     search_params = get_flight_search_params(
-        departure_id, arrival_id, outbound_date, return_date, search_time, currency, st.session_state.SERPAPI_API_KEY, config['flight_search']['engine']
+        departure_id, arrival_id, outbound_date, return_date, search_time, currency, SERPAPI_API_KEY, config['flight_search']['engine']
     )
 
     try:
