@@ -65,7 +65,7 @@ st.markdown(css_style, unsafe_allow_html=True)
 departure_id = st.text_input("📍 Departure Airport Code (e.g., DEL)", value="DEL")
 arrival_id = st.text_input("📍 Arrival Airport Code (e.g., BOM)", value="BOM")
 flight_type = st.selectbox("🛫 Flight Type", ["One-Way", "Return"])
-outbound_date = st.date_input("📅 Outbound Date", min_value=datetime.date.today())
+outbound_date = st.date_input("📅 Journey Date", min_value=datetime.date.today())
 return_date = st.date_input("📅 Return Date", min_value=datetime.date.today()) if flight_type == "Return" else None
 currency = st.selectbox("💱 Currency", config['flight_search']['currency_options'], index=0)
 
