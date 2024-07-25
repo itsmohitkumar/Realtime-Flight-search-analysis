@@ -52,18 +52,18 @@ Create a `config.json` file in the root directory with the following content:
 
 ```json
 {
-  "custom_css": {
-    "background_image_url": "https://removal.ai/wp-content/uploads/2021/09/black-background-04-coolbackgrounds.png",
-    "hide_footer": true
-  },
-  "flight_search": {
-    "engine": "google_flights",
-    "currency_options": ["USD", "EUR", "GBP", "JPY"]
-  },
-  "openai": {
-    "model": "gpt-3.5-turbo",
-    "temperature": 0
-  }
+    "custom_css": {
+        "background_image_url": "https://images.unsplash.com/photo-1513922203437-86dc31ea478f?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGRhcmslMjBwbGFuZXxlbnwwfHwwfHx8MA%3D%3D",
+        "hide_footer": true
+    },
+    "flight_search": {
+        "engine": "google_flights",
+        "currency_options": ["INR", "USD", "EUR", "GBP", "JPY"]
+    },
+    "openai": {
+        "model": "gpt-4o",
+        "temperature": 0
+    }
 }
 ```
 
