@@ -3,13 +3,9 @@ import datetime
 import json
 import logging
 import streamlit as st
-from dotenv import load_dotenv
 import serpapi
 from openai import OpenAI
 from utils import load_config, get_flight_search_params, prepare_prompt, call_openai
-
-# Load environment variables from .env file
-load_dotenv()
 
 # Load configuration from JSON file
 config = load_config('config.json')
@@ -17,17 +13,37 @@ config = load_config('config.json')
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Get API keys from environment variables
+# Streamlit app layout with blurred background
+st.markdown('<div class="blurred-background">', unsafe_allow_html=True)
+
+st.title("✈️ Flight Search and Analysis")
+
+# Check if API keys are set in environment variables
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 SERPAPI_API_KEY = os.getenv('SERPAPI_API_KEY')
 
 if not OPENAI_API_KEY or not SERPAPI_API_KEY:
-    logging.error("API keys are not set.")
-    st.error("Both OPENAI_API_KEY and SERPAPI_API_KEY are required.")
-    st.stop()
+    # API keys are not set, prompt the user to enter them
+    if 'OPENAI_API_KEY' not in st.session_state:
+        st.session_state.OPENAI_API_KEY = st.text_input("Enter your OpenAI API Key", type="password")
+    if 'SERPAPI_API_KEY' not in st.session_state:
+        st.session_state.SERPAPI_API_KEY = st.text_input("Enter your SerpAPI API Key", type="password")
+    
+    # Ensure keys are provided
+    if not st.session_state.OPENAI_API_KEY or not st.session_state.SERPAPI_API_KEY:
+        st.warning("Please provide both OpenAI and SerpAPI API keys to use the flight search functionality.")
+        st.stop()
+    
+    # Use the keys provided by the user
+    OPENAI_API_KEY = st.session_state.OPENAI_API_KEY
+    SERPAPI_API_KEY = st.session_state.SERPAPI_API_KEY
+else:
+    # Use the keys from environment variables
+    st.session_state.OPENAI_API_KEY = OPENAI_API_KEY
+    st.session_state.SERPAPI_API_KEY = SERPAPI_API_KEY
 
 # Set up the OpenAI client
-Client = OpenAI(api_key=OPENAI_API_KEY)
+Client = OpenAI(api_key=st.session_state.OPENAI_API_KEY)
 
 # Custom CSS to apply a background image
 css_style = f"""
@@ -45,16 +61,11 @@ css_style = f"""
     """
 st.markdown(css_style, unsafe_allow_html=True)
 
-# Streamlit app layout with blurred background
-st.markdown('<div class="blurred-background">', unsafe_allow_html=True)
-
-st.title("✈️ Flight Search and Analysis")
-
 # User inputs
 departure_id = st.text_input("📍 Departure Airport Code (e.g., DEL)", value="DEL")
 arrival_id = st.text_input("📍 Arrival Airport Code (e.g., BOM)", value="BOM")
 flight_type = st.selectbox("🛫 Flight Type", ["One-Way", "Return"])
-outbound_date = st.date_input("📅 Journey Date", min_value=datetime.date.today())
+outbound_date = st.date_input("📅 Outbound Date", min_value=datetime.date.today())
 return_date = st.date_input("📅 Return Date", min_value=datetime.date.today()) if flight_type == "Return" else None
 currency = st.selectbox("💱 Currency", config['flight_search']['currency_options'], index=0)
 
@@ -65,7 +76,7 @@ if st.button("🔍 Search Flights"):
 
     # Define parameters for the flight search
     search_params = get_flight_search_params(
-        departure_id, arrival_id, outbound_date, return_date, search_time, currency, SERPAPI_API_KEY, config['flight_search']['engine']
+        departure_id, arrival_id, outbound_date, return_date, search_time, currency, st.session_state.SERPAPI_API_KEY, config['flight_search']['engine']
     )
 
     try:
