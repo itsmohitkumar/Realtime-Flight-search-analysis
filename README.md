@@ -107,7 +107,7 @@ Open your browser and navigate to `http://localhost:8501` to access the applicat
 
 Check out our [introduction video on YouTube](https://youtu.be/g5st4b4gPmY) to learn more about the project!
 
-[![Introduction Video](https://i9.ytimg.com/vi_webp/g5st4b4gPmY/mq2.webp?sqp=CNi8irUG-oaymwEmCMACELQB8quKqQMa8AEB-AH-CYACvgWKAgwIABABGEcgVyhlMA8=&rs=AOn4CLCm1rb7goBiOtw-W5kpFAQivrO--g)](https://youtu.be/g5st4b4gPmY)
+[![Introduction Video]([https://i9.ytimg.com/vi_webp/g5st4b4gPmY/mq2.webp?sqp=CNi8irUG-oaymwEmCMACELQB8quKqQMa8AEB-AH-CYACvgWKAgwIABABGEcgVyhlMA8=&rs=AOn4CLCm1rb7goBiOtw-W5kpFAQivrO--g](https://i.ytimg.com/an_webp/g5st4b4gPmY/mqdefault_6s.webp?du=3000&sqp=CJylmrUG&rs=AOn4CLDMu6q13UrV9ifirJfYOioH3geznw))](https://youtu.be/g5st4b4gPmY)
 
 ## Contributing
 
