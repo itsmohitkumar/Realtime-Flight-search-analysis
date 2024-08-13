@@ -20,7 +20,7 @@ Ensure you have Python 3.7 or later installed.
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/flight-search-analysis.git
+git clone https://github.com/itstaurangela/Realtime-Flight-search-analysis.git
 cd flight-search-analysis
 ```
 
